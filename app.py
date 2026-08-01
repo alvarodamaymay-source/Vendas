@@ -16,8 +16,8 @@ STORE_HTML = """
         header { background: #130b22; border-bottom: 1px solid #2b174a; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 20px; font-weight: 700; color: #c084fc; text-shadow: 0 0 10px rgba(192,132,252,0.4); }
         .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { color: #cbd5e1; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
-        .nav-links a:hover { color: #c084fc; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover, .nav-links a.active { color: #c084fc; text-shadow: 0 0 8px rgba(192,132,252,0.4); }
         
         .hero { text-align: center; padding: 70px 20px; background: radial-gradient(circle at center, #231245 0%, #0b0713 70%); }
         .hero h1 { font-size: 40px; color: #fff; margin-bottom: 15px; }
@@ -27,106 +27,212 @@ STORE_HTML = """
         .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
         .section-title { font-size: 24px; color: #fff; margin-bottom: 25px; text-align: center; border-bottom: 2px solid #2b174a; padding-bottom: 10px; }
         
+        /* Abas (Tabs) Conteúdo */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Quem Somos */
+        .about-box { background: #130b22; border: 1px solid #2b174a; padding: 35px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(147,51,234,0.1); }
+        .about-box h3 { color: #c084fc; margin-bottom: 15px; font-size: 22px; }
+        .about-box p { color: #94a3b8; margin-bottom: 15px; font-size: 15px; }
+
         /* Grid de Produtos */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
-        .product-card { background: #130b22; border: 1px solid #2b174a; padding: 25px; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .product-card { background: #130b22; border: 1px solid #2b174a; padding: 25px; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; cursor: pointer; }
         .product-card:hover { border-color: #9333ea; box-shadow: 0 0 20px rgba(147,51,234,0.15); }
         .product-card h3 { color: #c084fc; margin-bottom: 10px; font-size: 20px; }
         .product-card p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
         .product-price { font-size: 22px; color: #fff; font-weight: 700; margin-bottom: 20px; }
-        .btn-buy { background: #9333ea; color: #fff; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; text-decoration: none; text-align: center; box-shadow: 0 0 15px rgba(147,51,234,0.4); transition: 0.3s; display: block; border: none; cursor: pointer; width: 100%; }
-        .btn-buy:hover { background: #a855f7; box-shadow: 0 0 25px rgba(168,85,247,0.7); }
+        .badge-coming { background: #2b174a; color: #c084fc; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 15px; }
 
-        /* Checkout / Pagamento Pix (Oculto inicialmente) */
-        #checkout-section { display: none; }
-        .checkout-box { background: #130b22; border: 2px solid #9333ea; border-radius: 12px; padding: 35px; text-align: center; margin-bottom: 50px; box-shadow: 0 0 25px rgba(147,51,234,0.2); }
-        .checkout-box h2 { color: #fff; margin-bottom: 15px; }
-        .order-key { background: #0b0713; border: 1px dashed #9333ea; padding: 12px; font-family: monospace; font-size: 13px; color: #fff; margin-bottom: 20px; border-radius: 6px; word-break: break-all; }
+        /* Detalhes do Produto / Checkout */
+        .product-detail-view { background: #130b22; border: 1px solid #2b174a; border-radius: 12px; padding: 35px; margin-top: 30px; display: none; }
+        .product-detail-view h2 { color: #fff; margin-bottom: 15px; font-size: 24px; color: #c084fc; }
+        .product-detail-view p { color: #94a3b8; margin-bottom: 20px; font-size: 15px; }
+        
+        .btn-action { background: #9333ea; color: #fff; padding: 12px 25px; font-size: 14px; font-weight: 600; border-radius: 6px; text-decoration: none; text-align: center; box-shadow: 0 0 15px rgba(147,51,234,0.4); transition: 0.3s; display: inline-block; border: none; cursor: pointer; }
+        .btn-action:hover { background: #a855f7; box-shadow: 0 0 25px rgba(168,85,247,0.7); }
+
+        .tutorial-container { background: #0b0713; border: 1px dashed #4c1d95; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+        .tutorial-container h4 { color: #fff; margin-bottom: 10px; }
+        .tutorial-container a { color: #c084fc; text-decoration: underline; font-weight: 600; }
+
+        /* Área de Pagamento Pix */
+        .checkout-box { background: #0b0713; border: 2px solid #9333ea; border-radius: 12px; padding: 25px; text-align: center; margin-top: 25px; display: none; box-shadow: 0 0 25px rgba(147,51,234,0.2); }
+        .order-key { background: #130b22; border: 1px dashed #9333ea; padding: 12px; font-family: monospace; font-size: 14px; color: #fff; margin-bottom: 20px; border-radius: 6px; word-break: break-all; }
         .qrcode-placeholder { background: #fff; width: 180px; height: 180px; margin: 0 auto 20px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; }
         .qrcode-placeholder img { width: 100%; height: 100%; }
         .btn-copy { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; }
         .btn-copy:hover { background: #2563eb; }
 
         /* Feedbacks */
-        .reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .review-card { background: #130b22; border: 1px solid #2b174a; padding: 20px; border-radius: 10px; }
-        .review-author { color: #c084fc; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
-        .review-text { color: #cbd5e1; font-size: 13px; }
+        .review-author { color: #c084fc; font-weight: 600; margin-bottom: 5px; font-size: 14px; display: flex; justify-content: space-between; }
+        .stars { color: #fbbf24; font-size: 14px; }
+        .review-text { color: #cbd5e1; font-size: 13px; margin-top: 10px; }
 
-        /* Tutorial */
-        .tutorial-box { background: linear-gradient(135deg, #130b22, #1e1138); border: 1px solid #4c1d95; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 50px; }
-        .tutorial-box h3 { color: #fff; margin-bottom: 15px; }
-        .btn-tutorial { background: transparent; border: 2px solid #c084fc; color: #c084fc; padding: 10px 25px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.3s; display: inline-block; }
-        .btn-tutorial:hover { background: #c084fc; color: #0b0713; }
+        .feedback-form-box { background: #130b22; border: 1px solid #2b174a; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; }
+        .feedback-form-box h3 { color: #fff; margin-bottom: 20px; font-size: 20px; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; color: #94a3b8; font-size: 13px; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #0b0713; border: 1px solid #2b174a; color: #fff; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 14px; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #9333ea; outline: none; }
 
-        footer { text-align: center; padding: 25px; color: #64748b; font-size: 13px; border-top: 1px solid #2b174a; background: #130b22; }
+        footer { text-align: center; padding: 25px; color: #64748b; font-size: 13px; border-top: 1px solid #2b174a; background: #130b22; margin-top: 50px; }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">⚡ CYBER_CORE SYSTEM</div>
         <div class="nav-links">
-            <a href="#produtos">Produtos</a>
-            <a href="#checkout-section" onclick="mostrarCheckout()">Pagamento</a>
-            <a href="#tutoriais" id="nav-tutorial" style="display:none;">Tutorial</a>
+            <a onclick="switchTab('quem-somos', this)" id="link-quem-somos" class="active">Quem Somos</a>
+            <a onclick="switchTab('produtos', this)" id="link-produtos">Produtos</a>
+            <a onclick="switchTab('feedback', this)" id="link-feedback">Feedback</a>
         </div>
     </header>
 
     <div class="hero">
-        <h1>Loja Oficial <span>Cyber Core</span></h1>
-        <p>Adquira ferramentas profissionais de alta performance com entrega imediata e suporte dedicado.</p>
+        <h1 id="hero-title">Quem Somos // <span>Cyber Core</span></h1>
+        <p id="hero-desc">Conheça a tecnologia de ponta e a equipe por trás dos sistemas mais avançados de alta performance.</p>
     </div>
 
     <div class="container">
-        <h2 id="produtos" class="section-title">Nossos Produtos</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <div>
-                    <h3>Painel de Monitoramento v1.0</h3>
-                    <p>Acesso completo ao sistema de rastreamento em tempo real com interface camuflada, radar e atualizações vitalícias.</p>
+        <!-- ABA: QUEM SOMOS -->
+        <div id="quem-somos" class="tab-content active">
+            <div class="about-box">
+                <h3>O que é a Cyber Core?</h3>
+                <p>A <strong>Cyber Core</strong> é uma organização de desenvolvimento de software e automação de alta performance focada em criar ferramentas robustas, seguras e eficientes para o ecossistema gamer e de monitoramento digital.</p>
+                <p>Nossa missão é entregar soluções de ponta com interfaces camufladas, alta estabilidade, atualizações constantes e suporte dedicado para garantir a melhor experiência e performance para nossos usuários.</p>
+            </div>
+            <div class="about-box">
+                <h3>Nossos Pilares Tecnológicos</h3>
+                <p>⚡ <strong>Performance Extrema:</strong> Códigos otimizados para rodar sem travamentos ou sobrecarga no sistema operacional.</p>
+                <p>🛡️ <strong>Segurança e Discrição:</strong> Sistemas camuflados com protocolos avançados para total privacidade e estabilidade.</p>
+                <p>🤝 <strong>Suporte Vitalício:</strong> Comunidade ativa e atualizações constantes para todas as nossas ferramentas oficiais.</p>
+            </div>
+        </div>
+
+        <!-- ABA: PRODUTOS -->
+        <div id="produtos" class="tab-content">
+            <h2 class="section-title">Escolha sua Ferramenta</h2>
+            <div class="products-grid">
+                <!-- Produto 1: Painel de Monitoramento -->
+                <div class="product-card" onclick="selectProduct('monitoramento')">
+                    <div>
+                        <h3>Painel de Monitoramento v1.0</h3>
+                        <p>Acesso completo ao sistema de rastreamento em tempo real com interface camuflada, radar e atualizações vitalícias.</p>
+                    </div>
+                    <div>
+                        <div class="product-price">R$ 25,00</div>
+                        <span class="btn-action" style="display:block; text-align:center; padding: 8px;">VER DETALHES & TUTORIAL</span>
+                    </div>
                 </div>
-                <div>
-                    <div class="product-price">R$ 25,00</div>
-                    <button class="btn-buy" onclick="mostrarCheckout()">COMPRAR AGORA</button>
+
+                <!-- Produto 2: Painel Xit SAMP -->
+                <div class="product-card" onclick="selectProduct('samp')">
+                    <div>
+                        <span class="badge-coming">AINDA POR VIR...</span>
+                        <h3>Painel Xit SAMP</h3>
+                        <p>A próxima evolução para San Andreas Multiplayer. Ferramenta avançada em desenvolvimento com recursos exclusivos.</p>
+                    </div>
+                    <div>
+                        <div class="product-price" style="color: #64748b; font-size: 18px;">Em Breve</div>
+                        <span class="btn-action" style="display:block; text-align:center; padding: 8px; background: #2b174a;">VER MAIS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETALHES DO PRODUTO 1 (Monitoramento) -->
+            <div id="detail-monitoramento" class="product-detail-view">
+                <h2>Painel de Monitoramento v1.0</h2>
+                <p>Ferramenta profissional desenvolvida para rastreamento avançado em tempo real com alta precisão e painel camuflado.</p>
+                
+                <div class="tutorial-container">
+                    <h4>📘 Tutorial & Explicação de Uso</h4>
+                    <p style="color: #94a3b8; font-size: 14px; margin-bottom: 10px;">Assista ao guia completo em vídeo para configurar e operar o sistema em menos de 5 minutos:</p>
+                    <a href="https://www.youtube.com/watch?v=_Nlb0CzPxF8" target="_blank">▶ ACESSAR VÍDEO TUTORIAL NO YOUTUBE</a>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="font-size: 24px; color: #fff; font-weight: 700; margin-bottom: 15px;">Valor: R$ 25,00</div>
+                    <button class="btn-action" onclick="mostrarCheckout()">COMPRAR AGORA</button>
+                </div>
+
+                <!-- Área de Pagamento Pix -->
+                <div id="checkout-section" class="checkout-box">
+                    <h3 style="color: #fff; margin-bottom: 10px;">Área de Pagamento Seguro (Pix)</h3>
+                    <p style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;">Escaneie o QR Code abaixo para pagar o valor exato de R$ 25,00:</p>
+                    <div class="qrcode-placeholder">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014BR.GOV.BCB.PIX0136300108b6-bf51-4a92-bb5f-bcceb7bf1c99520400005303986540525.005802BR5925Alvaro Gabriel de Freitas6009SAO PAULO62140510Qe33xCiBEh630438DA" alt="QR Code Pix">
+                    </div>
+                    <p style="color: #94a3b8; margin-bottom: 10px; font-size: 14px;">Ou copie a sua chave Pix:</p>
+                    <div class="order-key" id="pixKey">300108b6-bf51-4a92-bb5f-bcceb7bf1c99</div>
+                    <button class="btn-copy" onclick="copyPix()">Copiar Chave Pix</button>
+                    <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">Após realizar o pagamento, envie o comprovante no suporte oficial.</p>
+                </div>
+            </div>
+
+            <!-- DETALHES DO PRODUTO 2 (SAMP) -->
+            <div id="detail-samp" class="product-detail-view">
+                <h2>Painel Xit SAMP</h2>
+                <div class="tutorial-container" style="text-align: center; padding: 30px;">
+                    <h3 style="color: #c084fc; margin-bottom: 10px;">🚧 Projeto em Desenvolvimento 🚧</h3>
+                    <p style="color: #94a3b8; font-size: 16px;">Este produto está <strong>ainda por vir...</strong> Fique atento às nossas atualizações e anúncios no servidor oficial!</p>
                 </div>
             </div>
         </div>
 
-        <!-- Seção oculta que aparece apenas após clicar em comprar -->
-        <div id="checkout-section">
-            <div id="checkout" class="checkout-box">
-                <h2>Área de Pagamento Seguro (Pix)</h2>
-                <p style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;">Escaneie o QR Code abaixo para pagar o valor exato:</p>
-                <div class="qrcode-placeholder">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014BR.GOV.BCB.PIX0136300108b6-bf51-4a92-bb5f-bcceb7bf1c99520400005303986540525.005802BR5925Alvaro Gabriel de Freitas6009SAO PAULO62140510Qe33xCiBEh630438DA" alt="QR Code Pix">
+        <!-- ABA: FEEDBACK -->
+        <div id="feedback" class="tab-content">
+            <h2 class="section-title">Avaliações da Comunidade</h2>
+            <div class="reviews-grid" id="reviews-container">
+                <div class="review-card">
+                    <div class="review-author">
+                        <span>@marcos_dev</span>
+                        <span class="stars">★★★★★</span>
+                    </div>
+                    <div class="review-text">"Simplesmente perfeito! O painel atualiza muito rápido e a interface é impecável. Vale cada centavo."</div>
                 </div>
-                <p style="color: #94a3b8; margin-bottom: 10px; font-size: 14px;">Ou copie o código Pix Copia e Cola:</p>
-                <div class="order-key" id="pixKey">300108b6-bf51-4a92-bb5f-bcceb7bf1c99</div>
-                <button class="btn-copy" onclick="copyPix()">Copiar Código Pix</button>
-                <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">Após realizar o pagamento, envie o comprovante no suporte.</p>
+                <div class="review-card">
+                    <div class="review-author">
+                        <span>@luiz_mm</span>
+                        <span class="stars">★★★★★</span>
+                    </div>
+                    <div class="review-text">"Ferramenta braba demais, suporte super atencioso e o sistema nunca cai. Recomendo muito!"</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-author">
+                        <span>@VitorH</span>
+                        <span class="stars">★★★★☆</span>
+                    </div>
+                    <div class="review-text">"Melhor painel que já utilizei. Muito fácil de configurar e usar no dia a dia."</div>
+                </div>
             </div>
 
-            <h2 id="tutoriais" class="section-title">Guia & Tutoriais</h2>
-            <div class="tutorial-box">
-                <h3>Precisa de ajuda para configurar ou usar?</h3>
-                <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Preparamos um guia passo a passo em vídeo para você começar a operar em menos de 5 minutos.</p>
-                <a href="https://www.youtube.com/watch?v=_Nlb0CzPxF8" target="_blank" class="btn-tutorial">ACESSAR TUTORIAL COMPLETO</a>
-            </div>
-        </div>
-
-        <h2 class="section-title">Avaliações da Galeria</h2>
-        <div class="reviews">
-            <div class="review-card">
-                <div class="review-author">@marcos_dev</div>
-                <div class="review-text">"Simplesmente perfeito! O painel atualiza muito rápido e a interface é impecável. Vale cada centavo."</div>
-            </div>
-            <div class="review-card">
-                <div class="review-author">@luiz_mm</div>
-                <div class="review-text">"Ferramenta braba demais, suporte super atencioso e o sistema nunca cai. Recomendo muito!"</div>
-            </div>
-            <div class="review-card">
-                <div class="review-author">@VitorH</div>
-                <div class="review-text">"Melhor painel que já utilizei. Muito fácil de configurar e usar no dia a dia."</div>
+            <div class="feedback-form-box">
+                <h3>Deixe o seu Feedback</h3>
+                <form id="feedbackForm" onsubmit="enviarFeedback(event)">
+                    <div class="form-group">
+                        <label for="nomeUser">Seu Nome / Apelido:</label>
+                        <input type="text" id="nomeUser" placeholder="Ex: @joao_gamer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estrelasUser">Quantidade de Estrelas:</label>
+                        <select id="estrelasUser" required>
+                            <option value="★★★★★">5 Estrelas (★★★★★)</option>
+                            <option value="★★★★☆">4 Estrelas (★★★★☆)</option>
+                            <option value="★★★☆☆">3 Estrelas (★★★☆☆)</option>
+                            <option value="★★☆☆☆">2 Estrelas (★★☆☆☆)</option>
+                            <option value="★☆☆☆☆">1 Estrela (★☆☆☆☆)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comentarioUser">Seu Comentário:</label>
+                        <textarea id="comentarioUser" rows="4" placeholder="Escreva o que achou da ferramenta..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-action" style="width: 100%;">Enviar Feedback</button>
+                </form>
             </div>
         </div>
     </div>
@@ -136,21 +242,95 @@ STORE_HTML = """
     </footer>
 
     <script>
+        function switchTab(tabId, element) {
+            // Esconde todas as abas
+            var contents = document.getElementsByClassName('tab-content');
+            for (let c of contents) {
+                c.classList.remove('active');
+            }
+            
+            // Remove active de todos os links
+            var links = document.querySelectorAll('.nav-links a');
+            for (let l of links) {
+                l.classList.remove('active');
+            }
+            
+            // Mostra aba selecionada
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+
+            // Atualiza título do Header
+            var heroTitle = document.getElementById('hero-title');
+            var heroDesc = document.getElementById('hero-desc');
+            if (tabId === 'quem-somos') {
+                heroTitle.innerHTML = "Quem Somos // <span>Cyber Core</span>";
+                heroDesc.innerHTML = "Conheça a tecnologia de ponta e a equipe por trás dos sistemas mais avançados de alta performance.";
+            } else if (tabId === 'produtos') {
+                heroTitle.innerHTML = "Nossos Produtos // <span>Cyber Core</span>";
+                heroDesc.innerHTML = "Ferramentas profissionais de alta performance com entrega imediata e suporte dedicado.";
+            } else if (tabId === 'feedback') {
+                heroTitle.innerHTML = "Avaliações // <span>Cyber Core</span>";
+                heroDesc.innerHTML = "Veja o que nossa comunidade está dizendo e deixe sua avaliação sobre nossos sistemas.";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectProduct(type) {
+            // Oculta ambas as views detalhadas primeiro
+            document.getElementById('detail-monitoramento').style.display = 'none';
+            document.getElementById('detail-samp').style.display = 'none';
+            
+            // Exibe a view selecionada
+            if (type === 'monitoramento') {
+                document.getElementById('detail-monitoramento').style.display = 'block';
+                document.getElementById('detail-monitoramento').scrollIntoView({ behavior: 'smooth' });
+            } else if (type === 'samp') {
+                document.getElementById('detail-samp').style.display = 'block';
+                document.getElementById('detail-samp').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function mostrarCheckout() {
             var checkoutSection = document.getElementById("checkout-section");
-            var navTutorial = document.getElementById("nav-tutorial");
-            
             checkoutSection.style.display = "block";
-            navTutorial.style.display = "inline";
-            
-            // Rola a página suavemente até o checkout
             checkoutSection.scrollIntoView({ behavior: 'smooth' });
         }
 
         function copyPix() {
             var text = document.getElementById("pixKey").innerText;
             navigator.clipboard.writeText(text);
-            alert("Código Pix copiado com sucesso!");
+            alert("Chave Pix copiada com sucesso!");
+        }
+
+        function enviarFeedback(event) {
+            event.preventDefault();
+            
+            var nome = document.getElementById('nomeUser').value;
+            var estrelas = document.getElementById('estrelasUser').value;
+            var comentario = document.getElementById('comentarioUser').value;
+            
+            var container = document.getElementById('reviews-container');
+            
+            var card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = `
+                <div class="review-author">
+                    <span>${nome}</span>
+                    <span class="stars">${estrelas}</span>
+                </div>
+                <div class="review-text">"${comentario}"</div>
+            `;
+            
+            // Adiciona no topo dos feedbacks
+            container.insertBefore(card, container.firstChild);
+            
+            // Reseta formulário e avisa
+            document.getElementById('feedbackForm').reset();
+            alert("Feedback enviado com sucesso! Obrigado pela sua avaliação.");
+            
+            // Rola para ver o feedback adicionado
+            container.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
