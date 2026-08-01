@@ -1,3 +1,8 @@
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+html_code = """
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -23,11 +28,9 @@
         .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
         .section-title { font-size: 24px; color: #fff; margin-bottom: 25px; text-align: center; border-bottom: 2px solid #2b174a; padding-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
-        /* Abas (Tabs) Conteúdo */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Janelas da Página Principal (Home) */
         .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 20px; }
         .home-card { background: #130b22; border: 1px solid #2b174a; border-radius: 12px; padding: 35px 25px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: space-between; box-shadow: 0 0 15px rgba(147,51,234,0.05); }
         .home-card:hover { border-color: #9333ea; transform: translateY(-5px); box-shadow: 0 0 25px rgba(147,51,234,0.25); background: #180e2b; }
@@ -37,12 +40,10 @@
         .home-btn { background: #2b174a; color: #c084fc; border: 1px solid #9333ea; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 13px; transition: 0.3s; width: 100%; }
         .home-card:hover .home-btn { background: #9333ea; color: #fff; box-shadow: 0 0 15px rgba(147,51,234,0.4); }
 
-        /* Quem Somos */
         .about-box { background: #130b22; border: 1px solid #2b174a; padding: 35px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(147,51,234,0.1); }
         .about-box h3 { color: #c084fc; margin-bottom: 15px; font-size: 22px; display: flex; align-items: center; gap: 10px; }
         .about-box p { color: #94a3b8; margin-bottom: 15px; font-size: 15px; }
 
-        /* Grid de Produtos */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
         .product-card { background: #130b22; border: 1px solid #2b174a; padding: 25px; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; cursor: pointer; }
         .product-card:hover { border-color: #9333ea; box-shadow: 0 0 20px rgba(147,51,234,0.15); }
@@ -51,7 +52,6 @@
         .product-price { font-size: 22px; color: #fff; font-weight: 700; margin-bottom: 20px; }
         .badge-coming { background: #2b174a; color: #c084fc; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 15px; }
 
-        /* Detalhes do Produto / Checkout */
         .product-detail-view { background: #130b22; border: 1px solid #2b174a; border-radius: 12px; padding: 35px; margin-top: 30px; display: none; }
         .product-detail-view h2 { color: #fff; margin-bottom: 15px; font-size: 24px; color: #c084fc; }
         .product-detail-view p { color: #94a3b8; margin-bottom: 20px; font-size: 15px; }
@@ -63,7 +63,6 @@
         .tutorial-container h4 { color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .tutorial-container a { color: #c084fc; text-decoration: underline; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
 
-        /* Área de Pagamento Pix */
         .checkout-box { background: #0b0713; border: 2px solid #9333ea; border-radius: 12px; padding: 25px; text-align: center; margin-top: 25px; display: none; box-shadow: 0 0 25px rgba(147,51,234,0.2); }
         .order-key { background: #130b22; border: 1px dashed #9333ea; padding: 12px; font-family: monospace; font-size: 14px; color: #fff; margin-bottom: 20px; border-radius: 6px; word-break: break-all; }
         .qrcode-placeholder { background: #fff; width: 180px; height: 180px; margin: 0 auto 20px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; }
@@ -71,7 +70,6 @@
         .btn-copy { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; }
         .btn-copy:hover { background: #2563eb; }
 
-        /* Feedbacks */
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .review-card { background: #130b22; border: 1px solid #2b174a; padding: 20px; border-radius: 10px; }
         .review-author { color: #c084fc; font-weight: 600; margin-bottom: 5px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
@@ -107,7 +105,6 @@
     </div>
 
     <div class="container">
-        <!-- ABA: PÁGINA PRINCIPAL (Janelas Iniciais) -->
         <div id="home" class="tab-content active">
             <h2 class="section-title">⚡ Painel de Navegação Oficial</h2>
             <div class="home-grid">
@@ -134,7 +131,6 @@
             </div>
         </div>
 
-        <!-- ABA: QUEM SOMOS -->
         <div id="quem-somos" class="tab-content">
             <div class="about-box">
                 <h3>ℹ️ O que é a Cyber Core?</h3>
@@ -149,11 +145,9 @@
             </div>
         </div>
 
-        <!-- ABA: PRODUTOS -->
         <div id="produtos" class="tab-content">
             <h2 class="section-title">📦 Escolha sua Ferramenta</h2>
             <div class="products-grid">
-                <!-- Produto 1: Painel de Monitoramento -->
                 <div class="product-card" onclick="selectProduct('monitoramento')">
                     <div>
                         <h3>⚡ Painel de Monitoramento v1.0</h3>
@@ -165,7 +159,6 @@
                     </div>
                 </div>
 
-                <!-- Produto 2: Painel Xit SAMP -->
                 <div class="product-card" onclick="selectProduct('samp')">
                     <div>
                         <span class="badge-coming">🚧 AINDA POR VIR...</span>
@@ -179,7 +172,6 @@
                 </div>
             </div>
 
-            <!-- DETALHES DO PRODUTO 1 (Monitoramento) -->
             <div id="detail-monitoramento" class="product-detail-view">
                 <h2>⚡ Painel de Monitoramento v1.0</h2>
                 <p>Ferramenta profissional desenvolvida para rastreamento avançado em tempo real com alta precisão e painel camuflado.</p>
@@ -195,7 +187,6 @@
                     <button class="btn-action" onclick="mostrarCheckout()">🛒 COMPRAR AGORA</button>
                 </div>
 
-                <!-- Área de Pagamento Pix -->
                 <div id="checkout-section" class="checkout-box">
                     <h3 style="color: #fff; margin-bottom: 10px;">💳 Área de Pagamento Seguro (Pix)</h3>
                     <p style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;">Escaneie o QR Code abaixo para pagar o valor exato de R$ 25,00:</p>
@@ -209,7 +200,6 @@
                 </div>
             </div>
 
-            <!-- DETALHES DO PRODUTO 2 (SAMP) -->
             <div id="detail-samp" class="product-detail-view">
                 <h2>🎮 Painel Xit SAMP</h2>
                 <div class="tutorial-container" style="text-align: center; padding: 30px;">
@@ -219,7 +209,6 @@
             </div>
         </div>
 
-        <!-- ABA: FEEDBACK -->
         <div id="feedback" class="tab-content">
             <h2 class="section-title">💬 Avaliações da Comunidade</h2>
             <div class="reviews-grid" id="reviews-container">
@@ -367,3 +356,11 @@
     </script>
 </body>
 </html>
+"""
+
+@app.route('/')
+def home():
+    return render_template_string(html_code)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
