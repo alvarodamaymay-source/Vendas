@@ -69,6 +69,21 @@ html_code = """
         .qrcode-placeholder img { width: 100%; height: 100%; }
         .btn-copy { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; }
         .btn-copy:hover { background: #2563eb; }
+        
+        .waiting-status { display: flex; align-items: center; justify-content: center; gap: 10px; color: #f59e0b; font-weight: 600; font-size: 14px; margin-top: 20px; background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .spinner { width: 18px; height: 18px; border: 3px solid rgba(245, 158, 11, 0.3); border-top: 3px solid #f59e0b; border-radius: 50%; animation: spin 1s linear infinite; }
+
+        /* Estilo da tela de sucesso após o pagamento automático */
+        .success-box { display: none; background: rgba(34, 197, 94, 0.1); border: 2px solid #22c55e; border-radius: 12px; padding: 25px; text-align: center; margin-top: 25px; box-shadow: 0 0 30px rgba(34, 197, 94, 0.25); animation: fadeIn 0.5s ease-in-out; }
+        .success-box h3 { color: #22c55e; font-size: 22px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .success-box p { color: #cbd5e1; font-size: 14px; margin-bottom: 20px; }
+        
+        .social-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+        .btn-whatsapp { background: #22c55e; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 0 15px rgba(34,197,94,0.4); transition: 0.3s; }
+        .btn-whatsapp:hover { background: #16a34a; box-shadow: 0 0 25px rgba(22,163,74,0.7); }
+        
+        .btn-discord { background: #5865F2; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 0 15px rgba(88,101,242,0.4); transition: 0.3s; }
+        .btn-discord:hover { background: #4752C4; box-shadow: 0 0 25px rgba(71,82,196,0.7); }
 
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .review-card { background: #130b22; border: 1px solid #2b174a; padding: 20px; border-radius: 10px; }
@@ -84,6 +99,15 @@ html_code = """
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #9333ea; outline: none; }
 
         footer { text-align: center; padding: 25px; color: #64748b; font-size: 13px; border-top: 1px solid #2b174a; background: #130b22; margin-top: 50px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -196,7 +220,28 @@ html_code = """
                     <p style="color: #94a3b8; margin-bottom: 10px; font-size: 14px;">Ou copie a sua chave Pix:</p>
                     <div class="order-key" id="pixKey">300108b6-bf51-4a92-bb5f-bcceb7bf1c99</div>
                     <button class="btn-copy" onclick="copyPix()">📋 Copiar Chave Pix</button>
-                    <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">Após realizar o pagamento, envie o comprovante no suporte oficial.</p>
+                    
+                    <!-- INDICADOR DE AGUARDANDO PAGAMENTO COM VERIFICAÇÃO AUTOMÁTICA -->
+                    <div id="waiting-status" class="waiting-status">
+                        <div class="spinner"></div>
+                        <span>Aguardando a confirmação do Pix em tempo real...</span>
+                    </div>
+
+                    <!-- CAIXA DE SUCESSO VERDE QUE APARECE AUTOMATICAMENTE QUANDO PAGO -->
+                    <div id="success-box" class="success-box">
+                        <h3>✅ Pagamento Realizado com Sucesso!</h3>
+                        <p>O seu pagamento foi identificado automaticamente pelo sistema. Envie o seu comprovante para a nossa equipe através de um dos botões abaixo:</p>
+                        <div class="social-buttons">
+                            <!-- WhatsApp com mensagem predefinida e seu número exato -->
+                            <a href="https://wa.me/5538998661085?text=Ol%C3%A1!%20Acabei%20de%20realizar%20o%20pagamento%20do%20Painel%20de%20Monitoramento.%20Segue%20o%20comprovante:" target="_blank" class="btn-whatsapp">
+                                💬 WhatsApp da Equipe
+                            </a>
+                            <!-- Discord com seu usuário correto -->
+                            <a href="https://discord.com/users/alvaro._.kk" target="_blank" class="btn-discord" onclick="alert('Meu Discord é: alvaro._.kk');">
+                                🎮 Discord Oficial
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -267,6 +312,8 @@ html_code = """
     </footer>
 
     <script>
+        let checkInterval = null;
+
         function switchTab(tabId, element) {
             var contents = document.getElementsByClassName('tab-content');
             for (let c of contents) {
@@ -319,12 +366,41 @@ html_code = """
             var checkoutSection = document.getElementById("checkout-section");
             checkoutSection.style.display = "block";
             checkoutSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Iniciar checagem automática na tela do usuário
+            iniciarVerificacaoAutomatica();
         }
 
         function copyPix() {
             var text = document.getElementById("pixKey").innerText;
             navigator.clipboard.writeText(text);
             alert("Chave Pix copiada com sucesso!");
+        }
+
+        function iniciarVerificacaoAutomatica() {
+            // Reseta estados anteriores
+            document.getElementById("success-box").style.display = "none";
+            document.getElementById("waiting-status").style.display = "flex";
+
+            if (checkInterval) clearInterval(checkInterval);
+
+            // Aqui o sistema faz uma verificação contínua na tela do cliente.
+            // Em uma integração real com gateway (Mercado Pago, OpenPix, etc.), 
+            // você faria um fetch periódico para uma rota Python do Flask consultando o status da cobrança.
+            // Exemplo integrado simulado de escuta em tempo real:
+            checkInterval = setInterval(() => {
+                // EXEMPLO DE INTEGRAÇÃO REAL (Substitua a lógica abaixo por uma chamada AJAX real para sua API/Gateway):
+                // fetch('/verificar-status-pagamento').then(res => res.json()).then(data => { if(data.pago) { aprovadoComSucesso(); } });
+                
+            }, 5000);
+        }
+
+        // Função chamada automaticamente quando a API do seu Gateway confirmar o pagamento
+        function aprovadoComSucesso() {
+            if (checkInterval) clearInterval(checkInterval);
+            document.getElementById("waiting-status").style.display = "none";
+            document.getElementById("success-box").style.display = "block";
+            document.getElementById("success-box").scrollIntoView({ behavior: 'smooth' });
         }
 
         function enviarFeedback(event) {
