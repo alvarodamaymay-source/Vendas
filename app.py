@@ -296,7 +296,7 @@ html_code = """
                     <h4>🎬 Vídeo Tutorial Demonstrativo:</h4>
                     <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Assista abaixo para ver o sistema em funcionamento e aprender a configurar:</p>
                     <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Vídeo Tutorial do Painel" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/_Nlb0CzPxF8" title="Vídeo Tutorial do Painel" allowfullscreen></iframe>
                     </div>
                 </div>
 
