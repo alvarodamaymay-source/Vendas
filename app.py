@@ -31,6 +31,23 @@ html_code = """
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 20px; }
+        .home-card { background: #130b22; border: 1px solid #2b174a; border-radius: 12px; padding: 35px 25px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: space-between; box-shadow: 0 0 15px rgba(147,51,234,0.05); }
+        .home-card:hover { border-color: #9333ea; transform: translateY(-5px); box-shadow: 0 0 25px rgba(147,51,234,0.25); background: #180e2b; }
+        .home-icon { font-size: 45px; margin-bottom: 20px; color: #c084fc; }
+        .home-card h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
+        .home-card p { color: #94a3b8; font-size: 14px; margin-bottom: 25px; }
+        .home-btn { background: #2b174a; color: #c084fc; border: 1px solid #9333ea; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 13px; transition: 0.3s; width: 100%; }
+        .home-card:hover .home-btn { background: #9333ea; color: #fff; box-shadow: 0 0 15px rgba(147,51,234,0.4); }
+
+        .about-box { background: #130b22; border: 1px solid #2b174a; padding: 35px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(147,51,234,0.1); }
+        .about-box h3 { color: #c084fc; margin-bottom: 15px; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+        .about-box p { color: #94a3b8; margin-bottom: 15px; font-size: 15px; text-align: justify; }
+        .about-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 25px; }
+        .feature-item { background: #0b0713; border: 1px solid #2b174a; padding: 20px; border-radius: 8px; }
+        .feature-item h4 { color: #fff; margin-bottom: 8px; font-size: 16px; }
+        .feature-item p { color: #94a3b8; font-size: 13px; margin: 0; }
+
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
         .product-card { background: #130b22; border: 1px solid #2b174a; padding: 25px; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; cursor: pointer; }
         .product-card:hover { border-color: #9333ea; box-shadow: 0 0 20px rgba(147,51,234,0.15); }
@@ -51,11 +68,9 @@ html_code = """
         .btn-copy { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; }
         .btn-copy:hover { background: #2563eb; }
 
-        /* Botão discreto para o cliente avisar que já pagou */
         .btn-ja-pagou { background: none; border: none; color: #94a3b8; font-size: 13px; text-decoration: underline; cursor: pointer; margin-top: 20px; display: block; width: 100%; transition: 0.3s; }
         .btn-ja-pagou:hover { color: #c084fc; }
 
-        /* Tela de sucesso que aparece ao clicar */
         .success-box { display: none; background: rgba(34, 197, 94, 0.1); border: 2px solid #22c55e; border-radius: 12px; padding: 25px; text-align: center; margin-top: 25px; box-shadow: 0 0 30px rgba(34, 197, 94, 0.25); animation: fadeIn 0.5s ease-in-out; }
         .success-box h3 { color: #22c55e; font-size: 22px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .success-box p { color: #cbd5e1; font-size: 14px; margin-bottom: 20px; }
@@ -76,36 +91,68 @@ html_code = """
         <div class="logo" onclick="switchTab('home', this)">🏠 <span>Página Principal</span></div>
         <div class="nav-links">
             <a onclick="switchTab('home', this)" id="link-home" class="active">🏠 Início</a>
+            <a onclick="switchTab('quem-somos', this)" id="link-quem-somos">ℹ️ Quem Somos</a>
             <a onclick="switchTab('produtos', this)" id="link-produtos">📦 Produtos</a>
         </div>
     </header>
 
     <div class="hero">
         <h1>CYBER_CORE // <span>Official Hub</span></h1>
-        <p>Selecione seu produto e realize o pagamento via Pix.</p>
+        <p>Selecione seu produto e realize o pagamento via Pix de forma rápida e segura.</p>
     </div>
 
     <div class="container">
+        <!-- ABA INÍCIO -->
         <div id="home" class="tab-content active">
             <h2 class="section-title">⚡ Painel de Navegação Oficial</h2>
-            <div class="products-grid">
-                <div class="product-card" onclick="switchTab('produtos', document.getElementById('link-produtos'))">
-                    <div>
-                        <h3>📦 Ir para Loja</h3>
-                        <p>Acesse o painel de monitoramento.</p>
-                    </div>
-                    <button class="btn-action" style="width:100%;">Acessar Loja →</button>
+            <div class="home-grid">
+                <div class="home-card" onclick="switchTab('produtos', document.getElementById('link-produtos'))">
+                    <div class="home-icon">📦</div>
+                    <h3>Produtos & Ferramentas</h3>
+                    <p>Explore nosso painel de monitoramento profissional.</p>
+                    <button class="home-btn">Acessar Loja →</button>
+                </div>
+                <div class="home-card" onclick="switchTab('quem-somos', document.getElementById('link-quem-somos'))">
+                    <div class="home-icon">ℹ️</div>
+                    <h3>Sobre a Cyber Core</h3>
+                    <p>Conheça nossa missão, tecnologias e equipe técnica.</p>
+                    <button class="home-btn">Ler Detalhes →</button>
                 </div>
             </div>
         </div>
 
+        <!-- ABA QUEM SOMOS -->
+        <div id="quem-somos" class="tab-content">
+            <div class="about-box">
+                <h3>ℹ️ Quem Somos & Nossa Missão</h3>
+                <p>A <strong>CYBER_CORE</strong> é uma organização especializada no desenvolvimento de soluções de software de alta performance, automação de sistemas e ferramentas avançadas de monitoramento digital. Nosso foco principal é entregar interfaces robustas, seguras e com design moderno para atender projetos de grande exigência técnica.</p>
+                <p>Fundada com o objetivo de otimizar processos e criar ecossistemas digitais eficientes, nossa equipe combina engenharia de software de ponta com um layout inspirado em estética cyberpunk e futurista.</p>
+                
+                <div class="about-features">
+                    <div class="feature-item">
+                        <h4>⚡ Alta Performance</h4>
+                        <p>Sistemas otimizados para rodar sem travar, garantindo resposta imediata em qualquer operação.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔒 Segurança Avançada</h4>
+                        <p>Arquitetura estruturada para proteger dados e manter a integridade dos ambientes gerenciados.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🛠️ Suporte Direto</h4>
+                        <p>Atendimento ágil e especializado via Discord e WhatsApp para auxiliar em qualquer configuração.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA PRODUTOS -->
         <div id="produtos" class="tab-content">
             <h2 class="section-title">📦 Escolha sua Ferramenta</h2>
             <div class="products-grid">
                 <div class="product-card" onclick="mostrarCheckout()">
                     <div>
                         <h3>⚡ Painel de Monitoramento v1.0</h3>
-                        <p>Acesso completo ao sistema de rastreamento em tempo real.</p>
+                        <p>Acesso completo ao sistema de rastreamento em tempo real com interface camuflada.</p>
                     </div>
                     <div>
                         <div class="product-price">R$ 25,00</div>
@@ -125,13 +172,11 @@ html_code = """
                 <div class="order-key" id="pixKey">300108b6-bf51-4a92-bb5f-bcceb7bf1c99</div>
                 <button class="btn-copy" onclick="copyPix()">📋 Copiar Chave Pix</button>
 
-                <!-- Botão discreto embaixo para o usuário clicar quando pagar -->
                 <button class="btn-ja-pagou" onclick="liberarTelaSucesso()">Já pagou? Clique aqui para ver as opções</button>
 
-                <!-- Tela verde que aparece instantaneamente ao clicar -->
                 <div id="success-box" class="success-box">
                     <h3>✅ Pagamento Confirmado!</h3>
-                    <p>Agora escolha onde deseja receber ou enviar o comprovante com a nossa equipe:</p>
+                    <p>Agora escolha onde deseja enviar o comprovante com a nossa equipe:</p>
                     <div class="social-buttons">
                         <a href="https://wa.me/5538998661085?text=Ol%C3%A1!%20Paguei%20o%20Painel%20de%20Monitoramento.%20Segue%20o%20comprovante:" target="_blank" class="btn-whatsapp">
                             💬 WhatsApp da Equipe
