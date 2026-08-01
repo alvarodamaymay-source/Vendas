@@ -34,13 +34,14 @@ STORE_HTML = """
         .product-card h3 { color: #c084fc; margin-bottom: 10px; font-size: 20px; }
         .product-card p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
         .product-price { font-size: 22px; color: #fff; font-weight: 700; margin-bottom: 20px; }
-        .btn-buy { background: #9333ea; color: #fff; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; text-decoration: none; text-align: center; box-shadow: 0 0 15px rgba(147,51,234,0.4); transition: 0.3s; display: block; }
+        .btn-buy { background: #9333ea; color: #fff; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; text-decoration: none; text-align: center; box-shadow: 0 0 15px rgba(147,51,234,0.4); transition: 0.3s; display: block; border: none; cursor: pointer; width: 100%; }
         .btn-buy:hover { background: #a855f7; box-shadow: 0 0 25px rgba(168,85,247,0.7); }
 
-        /* Checkout / Pagamento Pix */
+        /* Checkout / Pagamento Pix (Oculto inicialmente) */
+        #checkout-section { display: none; }
         .checkout-box { background: #130b22; border: 2px solid #9333ea; border-radius: 12px; padding: 35px; text-align: center; margin-bottom: 50px; box-shadow: 0 0 25px rgba(147,51,234,0.2); }
         .checkout-box h2 { color: #fff; margin-bottom: 15px; }
-        .order-key { background: #0b0713; border: 1px dashed #9333ea; padding: 12px; font-family: monospace; font-size: 14px; color: #fff; margin-bottom: 20px; border-radius: 6px; word-break: break-all; }
+        .order-key { background: #0b0713; border: 1px dashed #9333ea; padding: 12px; font-family: monospace; font-size: 13px; color: #fff; margin-bottom: 20px; border-radius: 6px; word-break: break-all; }
         .qrcode-placeholder { background: #fff; width: 180px; height: 180px; margin: 0 auto 20px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; }
         .qrcode-placeholder img { width: 100%; height: 100%; }
         .btn-copy { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 10px; }
@@ -66,8 +67,8 @@ STORE_HTML = """
         <div class="logo">⚡ CYBER_CORE SYSTEM</div>
         <div class="nav-links">
             <a href="#produtos">Produtos</a>
-            <a href="#checkout">Pagamento</a>
-            <a href="#tutoriais">Tutorial</a>
+            <a href="#checkout-section" onclick="mostrarCheckout()">Pagamento</a>
+            <a href="#tutoriais" id="nav-tutorial" style="display:none;">Tutorial</a>
         </div>
     </header>
 
@@ -86,21 +87,31 @@ STORE_HTML = """
                 </div>
                 <div>
                     <div class="product-price">R$ 25,00</div>
-                    <a href="#checkout" class="btn-buy">COMPRAR AGORA</a>
+                    <button class="btn-buy" onclick="mostrarCheckout()">COMPRAR AGORA</button>
                 </div>
             </div>
         </div>
 
-        <div id="checkout" class="checkout-box">
-            <h2>Área de Pagamento Seguro (Pix)</h2>
-            <p style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;">Escaneie o QR Code abaixo para pagar o valor exato:</p>
-            <div class="qrcode-placeholder">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014BR.GOV.BCB.PIX0136300108b6-bf51-4a92-bb5f-bcceb7bf1c99520400005303986540525.005802BR5925Alvaro Gabriel de Freitas6009SAO PAULO62140510Qe33xCiBEh630438DA" alt="QR Code Pix">
+        <!-- Seção oculta que aparece apenas após clicar em comprar -->
+        <div id="checkout-section">
+            <div id="checkout" class="checkout-box">
+                <h2>Área de Pagamento Seguro (Pix)</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px; font-size: 14px;">Escaneie o QR Code abaixo para pagar o valor exato:</p>
+                <div class="qrcode-placeholder">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014BR.GOV.BCB.PIX0136300108b6-bf51-4a92-bb5f-bcceb7bf1c99520400005303986540525.005802BR5925Alvaro Gabriel de Freitas6009SAO PAULO62140510Qe33xCiBEh630438DA" alt="QR Code Pix">
+                </div>
+                <p style="color: #94a3b8; margin-bottom: 10px; font-size: 14px;">Ou copie o código Pix Copia e Cola:</p>
+                <div class="order-key" id="pixKey">300108b6-bf51-4a92-bb5f-bcceb7bf1c99</div>
+                <button class="btn-copy" onclick="copyPix()">Copiar Código Pix</button>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">Após realizar o pagamento, envie o comprovante no suporte.</p>
             </div>
-            <p style="color: #94a3b8; margin-bottom: 10px; font-size: 14px;">Ou copie o código Pix Copia e Cola:</p>
-            <div class="order-key" id="pixKey">00020126580014BR.GOV.BCB.PIX0136300108b6-bf51-4a92-bb5f-bcceb7bf1c99520400005303986540525.005802BR5925Alvaro Gabriel de Freitas6009SAO PAULO62140510Qe33xCiBEh630438DA</div>
-            <button class="btn-copy" onclick="copyPix()">Copiar Código Pix</button>
-            <p style="font-size: 13px; color: #94a3b8; margin-top: 15px;">Após realizar o pagamento, envie o comprovante no suporte.</p>
+
+            <h2 id="tutoriais" class="section-title">Guia & Tutoriais</h2>
+            <div class="tutorial-box">
+                <h3>Precisa de ajuda para configurar ou usar?</h3>
+                <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Preparamos um guia passo a passo em vídeo para você começar a operar em menos de 5 minutos.</p>
+                <a href="https://www.youtube.com/watch?v=_Nlb0CzPxF8" target="_blank" class="btn-tutorial">ACESSAR TUTORIAL COMPLETO</a>
+            </div>
         </div>
 
         <h2 class="section-title">Avaliações da Galeria</h2>
@@ -118,13 +129,6 @@ STORE_HTML = """
                 <div class="review-text">"Melhor painel que já utilizei. Muito fácil de configurar e usar no dia a dia."</div>
             </div>
         </div>
-
-        <h2 id="tutoriais" class="section-title">Guia & Tutoriais</h2>
-        <div class="tutorial-box">
-            <h3>Precisa de ajuda para configurar ou usar?</h3>
-            <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px;">Preparamos um guia passo a passo em vídeo para você começar a operar em menos de 5 minutos.</p>
-            <a href="https://www.youtube.com/watch?v=_Nlb0CzPxF8" target="_blank" class="btn-tutorial">ACESSAR TUTORIAL COMPLETO</a>
-        </div>
     </div>
 
     <footer>
@@ -132,6 +136,17 @@ STORE_HTML = """
     </footer>
 
     <script>
+        function mostrarCheckout() {
+            var checkoutSection = document.getElementById("checkout-section");
+            var navTutorial = document.getElementById("nav-tutorial");
+            
+            checkoutSection.style.display = "block";
+            navTutorial.style.display = "inline";
+            
+            // Rola a página suavemente até o checkout
+            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
         function copyPix() {
             var text = document.getElementById("pixKey").innerText;
             navigator.clipboard.writeText(text);
